@@ -1,0 +1,143 @@
+/* Modéré, professionnel, sur le thème de la construction/forage (couleurs terres/industrielle, gris, orange brûlé) */
+body {
+    background-color: #f4f4f0; /* Gris très clair beige / ciment */
+    color: #333333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    color: #2c3e50; /* Gris anthracite / acier */
+    border-bottom: 2px solid #d35400; /* Orange de construction / sécurité */
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+form {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+    border-top: 5px solid #d35400; /* Bordure orange rappelant les engins de chantier */
+}
+
+label {
+    font-weight: bold;
+    color: #2c3e50;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 0 0 15px 0;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    background-color: #fafafa;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #d35400;
+    outline: none;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(211, 84, 0, 0.3);
+}
+
+button,
+input[type="submit"] {
+    background-color: #d35400; /* Bouton orange construction */
+    color: #ffffff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #a84300; /* Légèrement plus sombre */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+table th {
+    background-color: #2c3e50; /* Entête de tableau sombre comme l'acier */
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+a {
+    color: #d35400;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #a84300;
+}
+
+/* Utilities */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.error {
+    color: #c0392b;
+    background-color: #f9ebea;
+    padding: 10px;
+    border-left: 4px solid #c0392b;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.sousDevis {
+    background-color: #fdfdfd;
+    padding: 15px;
+    border: 1px dashed #d35400;
+    margin-bottom: 15px;
+}

@@ -1,0 +1,3 @@
+mvn clean package
+target/ForageMVC-1.0-SNAPSHOT.war
+target/ForageMVC.war

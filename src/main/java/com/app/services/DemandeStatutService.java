@@ -1,0 +1,89 @@
+package com.app.services;
+
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.app.entities.DemandeStatut;
+import com.app.repositories.DemandeStatutRepository;
+
+@Service
+public class DemandeStatutService {
+
+    @Autowired
+    private DemandeStatutRepository demandeStatutRepository;
+
+    public void saveDemandeStatut(DemandeStatut ds) {
+        applyDt(ds);
+        demandeStatutRepository.save(ds);
+    }
+    public List<DemandeStatut> getAllDemandeStatutById(int id){
+        return demandeStatutRepository.getAllByIdDemande(id);
+    }
+
+    public DemandeStatut getLatestStatutForDemande(int idDemande) {
+        return demandeStatutRepository.findTopByDemandeIdOrderByIdDesc(idDemande);
+    }
+
+    private void applyDt(DemandeStatut ds) {
+        if (ds == null || ds.getDemande() == null || ds.getDate() == null) {
+            return;
+        }
+
+        DemandeStatut previous = demandeStatutRepository
+                .findTopByDemandeIdOrderByIdDesc(ds.getDemande().getId());
+
+        if (previous == null || previous.getDate() == null || (previous.getId() == ds.getId())) {
+            ds.setDt(0.0);
+            return;
+        }
+
+        double minutes = calculateBusinessMinutes(previous.getDate(), ds.getDate());
+        ds.setDt(minutes);
+    }
+
+    private double calculateBusinessMinutes(LocalDateTime start, LocalDateTime end) {
+        if (end.isBefore(start)) {
+            return 0.0;
+        }
+
+        double minutes = 0.0;
+        LocalDate startDate = start.toLocalDate();
+        LocalDate endDate = end.toLocalDate();
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            DayOfWeek day = date.getDayOfWeek();
+            if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) {
+                continue;
+            }
+            LocalDateTime businessStart = date.atTime(8, 0);
+            LocalDateTime businessEnd = date.atTime(16, 0);
+
+            LocalDateTime dayStart
+                    = date.equals(startDate) ? start : businessStart;
+
+            LocalDateTime dayEnd
+                    = date.equals(endDate) ? end : businessEnd;
+
+            if (dayStart.isBefore(businessStart)) {
+                dayStart = businessStart;
+            }
+
+            if (dayEnd.isAfter(businessEnd)) {
+                dayEnd = businessEnd;
+            }
+
+            if (dayEnd.isAfter(dayStart)) {
+                minutes += Duration.between(dayStart, dayEnd).toMinutes();
+            }
+        }
+
+        return minutes;
+    }
+
+}
