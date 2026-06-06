@@ -24,7 +24,7 @@ DELETE FROM DemandeStatut;
 DELETE FROM SousDevis;
 DELETE FROM Devis;
 DELETE FROM Demande;
-DELETE FROM Parametre;
+# DELETE FROM Parametre;
 
 EOF
 
