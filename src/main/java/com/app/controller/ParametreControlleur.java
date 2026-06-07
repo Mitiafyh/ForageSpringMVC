@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,32 +37,59 @@ public class ParametreControlleur {
     @GetMapping("/alertes/{idDemande}")
     public List<Map<String, String>> getParameter(@PathVariable("idDemande") int idDemande) {
         List<Map<String, String>> demandeStatutList = new ArrayList<>();
+        Map<String, Parametre> matchedParametres = new HashMap<>();
 
         List<DemandeStatut> demandeStatut = demandeStatutService.getAllDemandeStatutById(idDemande);
         List<Parametre> parametres = parametreService.getAllParametres();
 
-
-        for (DemandeStatut ds1 : demandeStatut) {
-            for (DemandeStatut ds2 : demandeStatut) {
-                for (Parametre p : parametres) {
-                    if (ds1.getStatut().getId() == p.getIdStatut1() && ds2.getStatut().getId() == p.getIdStatut2()) {
-
-
-                        if (ds2.getDt() > p.getDt()) {
-                            
-                            Map<String,String> statutMap = Map.of(
-                                "Statut1",String.valueOf(ds1.getStatut().getId()),
-                                "Statut2", String.valueOf(ds2.getStatut().getId()),
-                                "DT", String.valueOf(ds2.getDt()),
-                                "Alerte", p.getAlerte()
-                            );
-                            demandeStatutList.add(statutMap);
-                        }
-                    }
+        for (Parametre p : parametres) {
+            double totalDt = calculateDtBetweenStatuses(demandeStatut, p.getIdStatut1(), p.getIdStatut2());
+            if (totalDt > p.getDt()) {
+                String key = p.getIdStatut1() + "-" + p.getIdStatut2();
+                Parametre current = matchedParametres.get(key);
+                if (current == null || p.getDt() > current.getDt()) {
+                    matchedParametres.put(key, p);
                 }
             }
         }
+
+        for (Parametre p : matchedParametres.values()) {
+            double totalDt = calculateDtBetweenStatuses(demandeStatut, p.getIdStatut1(), p.getIdStatut2());
+            Map<String,String> statutMap = Map.of(
+                "Statut1", String.valueOf(p.getIdStatut1()),
+                "Statut2", String.valueOf(p.getIdStatut2()),
+                "DT", String.valueOf(totalDt),
+                "Alerte", p.getAlerte()
+            );
+            demandeStatutList.add(statutMap);
+        }
         return demandeStatutList;
+    }
+
+    private double calculateDtBetweenStatuses(List<DemandeStatut> demandeStatut, int idStatut1, int idStatut2) {
+        double totalDt = 0.0;
+        boolean started = false;
+
+        for (DemandeStatut ds : demandeStatut) {
+            int currentStatutId = ds.getStatut().getId();
+
+            if (!started) {
+                if (currentStatutId == idStatut1) {
+                    started = true;
+                    totalDt += ds.getDt();
+                    if (idStatut1 == idStatut2) {
+                        return totalDt;
+                    }
+                }
+            } else {
+                totalDt += ds.getDt();
+                if (currentStatutId == idStatut2) {
+                    return totalDt;
+                }
+            }
+        }
+
+        return 0.0;
     }
 
 

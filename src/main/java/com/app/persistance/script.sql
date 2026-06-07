@@ -77,6 +77,10 @@ insert into Parametre(idStatut1, idStatut2, DT, alerte) values
 (6, 7, 120.0, 'Rouge'),
 (7, 8, 60.0, 'Jaune'),
 (7, 8, 120.0, 'Rouge');
+insert into `Parametre`(idStatut1, idStatut2, DT, alerte) values
+(1,3,60.0,'Jaune'),
+(1,3,120.0,'Rouge');
+
 
 
 
