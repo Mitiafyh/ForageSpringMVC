@@ -50,10 +50,8 @@ public class ParametreControlleur {
                         if (ds2.getDt() > p.getDt()) {
                             
                             Map<String,String> statutMap = Map.of(
-                                "idDemandeStatut 1", String.valueOf(ds1.getId()),
-                                "idDemandeStatut 2", String.valueOf(ds2.getId()),
-                                "Statut1", ds1.getStatut().getNomStatut(),
-                                "Statut2", ds2.getStatut().getNomStatut(),
+                                "Statut1",String.valueOf(ds1.getStatut().getId()),
+                                "Statut2", String.valueOf(ds2.getStatut().getId()),
                                 "DT", String.valueOf(ds2.getDt()),
                                 "Alerte", p.getAlerte()
                             );
