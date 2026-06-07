@@ -1,7 +1,9 @@
 package com.app.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import com.app.services.UserService;
 
 @Controller
 public class DemandeStatutController {
+
+    private static final DateTimeFormatter DATETIME_LOCAL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     @Autowired
     private DemandeService demandeService;
@@ -70,6 +74,48 @@ public class DemandeStatutController {
         demandeStatutService.saveDemandeStatut(ds);
 
         return "redirect:/demandes";
+    }
+
+    @GetMapping("/demandeStatuts")
+    public String listDemandeStatuts(Model model) {
+        List<DemandeStatut> demandeStatuts = demandeStatutService.getAllDemandeStatuts();
+        model.addAttribute("demandeStatuts", demandeStatuts);
+        return "listeDemandeStatut";
+    }
+
+    @GetMapping("/demandeStatuts/edit/{id}")
+    public String editDemandeStatut(@PathVariable("id") int id, Model model) {
+        DemandeStatut demandeStatut = demandeStatutService.getDemandeStatutById(id);
+        if (demandeStatut == null) {
+            return "redirect:/demandeStatuts";
+        }
+
+        model.addAttribute("demandeStatut", demandeStatut);
+        model.addAttribute("statuts", statutService.getAllStatuts());
+        model.addAttribute("dateValue", demandeStatut.getDate() == null
+                ? ""
+                : demandeStatut.getDate().format(DATETIME_LOCAL_FORMATTER));
+        return "editDemandeStatut";
+    }
+
+    @PostMapping("/demandeStatuts/update")
+    public String updateDemandeStatut(@RequestParam("id") int id,
+            @RequestParam("statut") int idStatut,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date,
+            @RequestParam("observation") String observation) {
+        DemandeStatut demandeStatut = demandeStatutService.getDemandeStatutById(id);
+        if (demandeStatut == null) {
+            return "redirect:/demandeStatuts";
+        }
+
+        Statut statut = statutService.getStatutById(idStatut);
+        demandeStatut.setStatut(statut);
+        demandeStatut.setDate(date);
+        demandeStatut.setObservation(observation);
+
+        demandeStatutService.updateDemandeStatut(demandeStatut);
+
+        return "redirect:/demandeStatuts";
     }
 
 }

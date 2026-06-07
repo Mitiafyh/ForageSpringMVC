@@ -10,6 +10,10 @@ import com.app.entities.DemandeStatut;
 
 public interface  DemandeStatutRepository extends JpaRepository<DemandeStatut, Integer> {
     DemandeStatut findTopByDemandeIdOrderByIdDesc(int idDemande);
+
+    @Query("SELECT ds FROM DemandeStatut ds WHERE ds.demande.id = :idDemande ORDER BY ds.date ASC, ds.id ASC")
+    List<DemandeStatut> findAllByDemandeIdOrderByDateAscIdAsc(@Param("idDemande") int idDemande);
+
     @Query("SELECT ds FROM DemandeStatut ds WHERE ds.demande.id = :idDemande")
     List<DemandeStatut> getAllByIdDemande(@Param("idDemande") int idDemande);
 }

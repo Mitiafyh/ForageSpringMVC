@@ -19,8 +19,39 @@ public class DemandeStatutService {
     private DemandeStatutRepository demandeStatutRepository;
 
     public void saveDemandeStatut(DemandeStatut ds) {
-        applyDt(ds);
         demandeStatutRepository.save(ds);
+        recalculateDtForDemande(ds.getDemande().getId());
+    }
+
+    public DemandeStatut updateDemandeStatut(DemandeStatut ds) {
+        DemandeStatut saved = demandeStatutRepository.save(ds);
+        recalculateDtForDemande(saved.getDemande().getId());
+        return saved;
+    }
+
+    public List<DemandeStatut> getAllDemandeStatuts() {
+        return demandeStatutRepository.findAll();
+    }
+
+    public DemandeStatut getDemandeStatutById(int id) {
+        return demandeStatutRepository.findById(id).orElse(null);
+    }
+
+    public void recalculateDtForDemande(int idDemande) {
+        List<DemandeStatut> demandeStatuts = demandeStatutRepository
+                .findAllByDemandeIdOrderByDateAscIdAsc(idDemande);
+
+        DemandeStatut previous = null;
+        for (DemandeStatut current : demandeStatuts) {
+            if (previous == null || previous.getDate() == null || current.getDate() == null) {
+                current.setDt(0.0);
+            } else {
+                current.setDt(calculateBusinessMinutes(previous.getDate(), current.getDate()));
+            }
+            previous = current;
+        }
+
+        demandeStatutRepository.saveAll(demandeStatuts);
     }
     public List<DemandeStatut> getAllDemandeStatutById(int id){
         return demandeStatutRepository.getAllByIdDemande(id);

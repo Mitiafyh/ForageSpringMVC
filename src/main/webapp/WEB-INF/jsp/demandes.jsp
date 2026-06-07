@@ -21,6 +21,9 @@
         <p>
             <a href="${pageContext.request.contextPath}/demandes/changeStatutForm">Modifier le statut d'une demande</a>
         </p>
+        <p>
+            <a href="${pageContext.request.contextPath}/demandeStatuts">Voir / modifier les DemandeStatut</a>
+        </p>
 
 
         <table border="1" cellpadding="6" cellspacing="0">
