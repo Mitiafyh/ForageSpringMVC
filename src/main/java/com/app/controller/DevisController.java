@@ -1,5 +1,6 @@
 package com.app.controller;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ import com.app.services.UserService;
 
 @Controller
 public class DevisController {
+
+    private static final DateTimeFormatter DATETIME_LOCAL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
     @Autowired
     private ClientService clientService;
     @Autowired
@@ -136,12 +139,17 @@ public class DevisController {
         model.addAttribute("devis", devis);
         model.addAttribute("sousDevisList", sousDevisList);
         model.addAttribute("demandes", demandeService.getAllDemandes());
+        DemandeStatut demandeStatut = demandeStatutService.getLatestStatutForDemande(devis.getDemande().getId());
+        model.addAttribute("dateValue", demandeStatut == null || demandeStatut.getDate() == null
+                ? ""
+                : demandeStatut.getDate().format(DATETIME_LOCAL_FORMATTER));
         return "editDevis";
     }
 
     @PostMapping("/devis/update")
     public String updateDevis(@RequestParam("id") int id,
             @RequestParam("demande") int idDemande,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date,
             @RequestParam(value = "description", required = false) List<String> descriptions,
             @RequestParam(value = "prix", required = false) List<Double> prix,
             @RequestParam(value = "quantite", required = false) List<Integer> quantites) {
@@ -152,6 +160,12 @@ public class DevisController {
         Demande demande = demandeService.getDemandeById(idDemande);
         devis.setDemande(demande);
         devisService.saveDevis(devis);
+
+        DemandeStatut demandeStatut = demandeStatutService.getLatestStatutForDemande(idDemande);
+        if (demandeStatut != null) {
+            demandeStatut.setDate(date);
+            demandeStatutService.updateDemandeStatut(demandeStatut);
+        }
         
         sousDevisService.deleteSousDevisByDevisId(id);
         

@@ -28,6 +28,9 @@
             <p><strong>Client:</strong> ${devis.demande.client.nom}</p>
             <p><strong>Lieu:</strong> ${devis.demande.lieu}</p>
 
+            <label for="date">Date :</label><br>
+            <input type="datetime-local" name="date" id="date" value="${dateValue}" required><br><br>
+
             <h3>Sous-Devis</h3>
             <button type="button" onclick="addSousDevis()">Ajouter un sous-devis</button>
             <div class="sousDevisContainer"></div>

@@ -36,6 +36,8 @@ import com.app.services.UserService;
 @Controller
 public class DemandeController {
 
+    private static final DateTimeFormatter DATETIME_LOCAL_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
     @Autowired
     private ClientService clientService;
     @Autowired
@@ -118,6 +120,10 @@ public class DemandeController {
         model.addAttribute("demande", demande);
         model.addAttribute("clients", clientService.getAllClients());
         model.addAttribute("regions", regionService.getAllRegions());
+        DemandeStatut demandeStatut = demandeStatutService.getFirstStatutForDemande(id);
+        model.addAttribute("dateValue", demandeStatut == null || demandeStatut.getDate() == null
+            ? ""
+            : demandeStatut.getDate().format(DATETIME_LOCAL_FORMATTER));
         if (commune != null) {
             model.addAttribute("selectedCommune", commune);
             model.addAttribute("selectedDistrict", commune.getDistrict());
@@ -134,6 +140,7 @@ public class DemandeController {
             @RequestParam("idClient") int idClient,
             @RequestParam("communeId") int communeId,
             @RequestParam("lieu") String lieu,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date,
             Model model) {
         Demande demande = demandeService.getDemandeById(id);
         Client client = clientService.getClientById(idClient);
@@ -151,6 +158,12 @@ public class DemandeController {
         demande.setIdCommune(communeId);
         demande.setLieu(lieu);
         demandeService.saveDemande(demande);
+
+        DemandeStatut demandeStatut = demandeStatutService.getFirstStatutForDemande(id);
+        if (demandeStatut != null) {
+            demandeStatut.setDate(date);
+            demandeStatutService.updateDemandeStatut(demandeStatut);
+        }
 
         return "redirect:/demandes";
     }

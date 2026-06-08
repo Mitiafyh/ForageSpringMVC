@@ -63,23 +63,13 @@ insert into Client(nom,contact,adresse) values('Rasoa','032 98 76 54 32','Lot II
 insert into Client(nom,contact,adresse) values('Noah','032 98 76 54 32','Lot II M 34 bis');
 
 insert into Parametre(idStatut1, idStatut2, DT, alerte) values
-(1, 2, 60.0, 'Jaune'),
+(1, 2, 90.0, 'Jaune'),
 (1, 2, 120.0, 'Rouge'),
-(2, 3, 60.0, 'Jaune'),
-(2, 3, 120.0, 'Rouge'),
-(3, 4, 60.0, 'Jaune'),
-(3, 4, 120.0, 'Rouge'),
-(4, 5, 60.0, 'Jaune'),
-(4, 5, 120.0, 'Rouge'),
-(5, 6, 60.0, 'Jaune'),
-(5, 6, 120.0, 'Rouge'),
-(6, 7, 60.0, 'Jaune'),
-(6, 7, 120.0, 'Rouge'),
-(7, 8, 60.0, 'Jaune'),
-(7, 8, 120.0, 'Rouge');
-insert into `Parametre`(idStatut1, idStatut2, DT, alerte) values
-(1,3,60.0,'Jaune'),
-(1,3,120.0,'Rouge');
+(3, 5, 180.0, 'Jaune'),
+(3, 5, 210.0, 'Rouge'),
+(6, 9, 10080.0, 'Jaune'),
+(6, 9, 14400.0, 'Rouge'),
+(1, 5, 1230.0, 'vert');
 
 
 

@@ -54,28 +54,23 @@ public class DemandeStatutService {
         demandeStatutRepository.saveAll(demandeStatuts);
     }
     public List<DemandeStatut> getAllDemandeStatutById(int id){
-        return demandeStatutRepository.getAllByIdDemande(id);
+        return demandeStatutRepository.findAllByDemandeIdOrderByDateAscIdAsc(id);
+    }
+
+    public DemandeStatut getFirstStatutForDemande(int idDemande) {
+        List<DemandeStatut> demandeStatuts = demandeStatutRepository.findAllByDemandeIdOrderByDateAscIdAsc(idDemande);
+        if (demandeStatuts.isEmpty()) {
+            return null;
+        }
+        return demandeStatuts.get(0);
     }
 
     public DemandeStatut getLatestStatutForDemande(int idDemande) {
-        return demandeStatutRepository.findTopByDemandeIdOrderByIdDesc(idDemande);
-    }
-
-    private void applyDt(DemandeStatut ds) {
-        if (ds == null || ds.getDemande() == null || ds.getDate() == null) {
-            return;
+        List<DemandeStatut> demandeStatuts = demandeStatutRepository.findAllByDemandeIdOrderByDateAscIdAsc(idDemande);
+        if (demandeStatuts.isEmpty()) {
+            return null;
         }
-
-        DemandeStatut previous = demandeStatutRepository
-                .findTopByDemandeIdOrderByIdDesc(ds.getDemande().getId());
-
-        if (previous == null || previous.getDate() == null || (previous.getId() == ds.getId())) {
-            ds.setDt(0.0);
-            return;
-        }
-
-        double minutes = calculateBusinessMinutes(previous.getDate(), ds.getDate());
-        ds.setDt(minutes);
+        return demandeStatuts.get(demandeStatuts.size() - 1);
     }
 
     private double calculateBusinessMinutes(LocalDateTime start, LocalDateTime end) {

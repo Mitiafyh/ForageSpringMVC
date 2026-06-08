@@ -61,6 +61,9 @@
         <label for="lieu">Lieu :</label><br>
         <input type="text" name="lieu" id="lieu" value="${demande.lieu}"><br><br>
 
+        <label for="date">Date :</label><br>
+        <input type="datetime-local" name="date" id="date" value="${dateValue}" required><br><br>
+
         <input type="submit" value="Mettre a jour">
     </form>
 

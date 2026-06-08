@@ -67,6 +67,10 @@ public class ParametreControlleur {
     }
 
     private double calculateDtBetweenStatuses(List<DemandeStatut> demandeStatut, int idStatut1, int idStatut2) {
+        if (idStatut1 > idStatut2) {
+            return 0.0;
+        }
+
         double totalDt = 0.0;
         boolean started = false;
 
@@ -74,17 +78,22 @@ public class ParametreControlleur {
             int currentStatutId = ds.getStatut().getId();
 
             if (!started) {
-                if (currentStatutId == idStatut1) {
+                if (currentStatutId >= idStatut1 && currentStatutId <= idStatut2) {
                     started = true;
                     totalDt += ds.getDt();
-                    if (idStatut1 == idStatut2) {
+                    if (currentStatutId == idStatut2) {
                         return totalDt;
                     }
                 }
             } else {
-                totalDt += ds.getDt();
+                if (currentStatutId <= idStatut2) {
+                    totalDt += ds.getDt();
+                }
                 if (currentStatutId == idStatut2) {
                     return totalDt;
+                }
+                if (currentStatutId > idStatut2) {
+                    break;
                 }
             }
         }
