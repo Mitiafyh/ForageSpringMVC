@@ -2,15 +2,16 @@ insert into TypeDevis (nomType) values ('Etude'), ('Forage');
 
 insert into
     Statut (nomStatut, sigle)
-values ('demande cree', 'DC'),
-    ('devis cree', 'DEC'),
-    ('devis accepte', 'DEA'),
+values ('demande cree', 'DC'),1
+    ('devis cree', 'DEC'),2
+    ('devis accepte', 'DEA'),3
     ('devis refuse', 'DER'),
-    ('forage cree', 'DFC'),
-    ('forage accepte', 'DFA'),
+    ('forage cree', 'DFC'),4
+    ('forage accepte', 'DFA'),5
     ('forage refuse', 'DFR'),
-    ('forage commence', 'FC'),
-    ('forage termine', 'FT');
+    ('forage commence', 'FC'),6
+    ('forage termine', 'FT');7
+   
 
 insert into
     User (nom, mdp)
@@ -86,21 +87,17 @@ values (
     );
 
 insert into Parametre (idStatut1,idStatut2,DT,DT2,alerte)
-values (1, 2,80, 160, 'Jaune'),
-    (1, 2,60, 180, 'Rouge'),
-    (2, 3,50, 67, 'Jaune'),
-    (2, 3,70, 80, 'Rouge'),
-    (2, 4,20, 160, 'Jaune'),
-    (2, 4,30, 190, 'Rouge'),
-    (4, 5,40, 100, 'Jaune'),
-    (4, 5,60, 190, 'Rouge'),
-    (5, 6,70, 132, 'Jaune'),
-    (5, 6,90, 190, 'Rouge'),
-    (5, 7,80, 186, 'Jaune'),
-    (5, 7,100, 190, 'Rouge'),
-    (7, 8,90, 166, 'Jaune'),
-    (7, 8,60, 180, 'Rouge'),
-    (8, 9,10, 19, 'Jaune'),
-    (8, 9,80, 190, 'Rouge'),
-    (1, 4,100, 150, 'Rouge'),
-    (1, 4,120, 180, 'Rouge');
+values (1, 2,480, 600, 'Jaune'),
+(1,2,1440,2880,'Rouge'),
+(2,3,240,300,'Jaune'),
+(2,3,360,480,'Rouge'),
+(3,5,60,120,'Jaune'),
+(3,5,180,240,'Rouge'),
+(5,6,240,480,'Jaune'),
+(5,6,600,720,'Rouge'),
+(6,8,1200,1800,'Jaune'),
+(6,8,1801,3600,'Rouge'),
+(8,9,3600,4200,'Jaune'),
+(8,9,4800,6000,'Rouge');
+
+   
