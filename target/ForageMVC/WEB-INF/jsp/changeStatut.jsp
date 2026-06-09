@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    
 <form action="${pageContext.request.contextPath}/demandes/changeStatut" method="post">
     <label for="demande">Demande:</label><br>
     <select name="demande" id="demande" onclick="StatutActuel()">

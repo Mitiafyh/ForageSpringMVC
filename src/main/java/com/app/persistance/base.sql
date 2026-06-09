@@ -105,5 +105,8 @@ create Table Parametre(
     idStatut1 INT,
     idStatut2 INT,
     DT DOUBLE,
+    DT2 DOUBLE,
     alerte VARCHAR(20)
 );
+
+drop table `Parametre`;

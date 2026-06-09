@@ -29,15 +29,20 @@ public class Parametre {
     @Column(name = "DT")
     private Double dt;
 
+    @Column(name = "DT2")
+    private Double dt2;
+
+
     @Column(name = "alerte")
     private String alerte;
 
     public Parametre() {}
 
-    public Parametre(int idStatut1, int idStatut2, Double dt, String alerte) {
+    public Parametre(int idStatut1, int idStatut2, Double dt, Double dt2, String alerte) {
         this.idStatut1 = idStatut1;
         this.idStatut2 = idStatut2;
         this.dt = dt;
+        this.dt2 = dt2;
         this.alerte = alerte;
     }
 
@@ -79,6 +84,12 @@ public class Parametre {
 
     public void setAlerte(String alerte) {
         this.alerte = alerte;
+    }
+    public Double getDt2() {
+        return dt2;
+    }
+    public void setDt2(Double dt2) {
+        this.dt2 = dt2;
     }
 
 }
